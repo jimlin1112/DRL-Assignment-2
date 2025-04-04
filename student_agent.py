@@ -9,6 +9,7 @@ import copy
 import random
 import math
 import dill
+from numba import jit, njit
 
 
 COLOR_MAP = {
