@@ -1,15 +1,16 @@
 # Remember to adjust your student ID in meta.xml
+import copy
+import random
+import math
 import numpy as np
+from collections import defaultdict
 import pickle
+
+import numpy as np
 import random
 import gym
 from gym import spaces
 import matplotlib.pyplot as plt
-import copy
-import random
-import math
-# from numba import jit, njit 
-import cloudpickle
 
 
 COLOR_MAP = {
@@ -455,7 +456,7 @@ class TD_MCTS:
         return best_action, distribution
     
 with open("ntuple_approximator.pkl", "rb") as f:
-    approximator = cloudpickle.load(f)
+    approximator = pickle.load(f)
 
 env = Game2048Env()
 td_mcts = TD_MCTS(env, approximator, iterations=50, exploration_constant=1.41, rollout_depth=10, gamma=0.99)
