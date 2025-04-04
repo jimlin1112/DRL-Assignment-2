@@ -7,7 +7,6 @@ import pickle
 import gym
 from gym import spaces
 import matplotlib.pyplot as plt
-from ntuple import NTupleApproximator
 
 def rot90(pattern, board_size):
     return [(j, board_size - 1 - i) for (i, j) in pattern]
