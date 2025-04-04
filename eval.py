@@ -15,6 +15,8 @@ import sys
 import importlib
 import env
 
+from ntuple import NTupleApproximator
+
 
 
 if __name__ == "__main__":
