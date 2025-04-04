@@ -2,7 +2,7 @@ game=/lud/board/space/line/Connect6.lud
 START GAME OPTIONS
 Board Size/19x19
 END GAME OPTIONS
-RNG internal state=127,17,-98,-92,15,-2,-9,13
+RNG internal state=123,82,84,102,-111,-91,38,-62
 numInitialPlacementMoves=0
 rankings=0.0,0.0,0.0
 SANDBOX=false
