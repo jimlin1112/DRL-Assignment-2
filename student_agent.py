@@ -158,6 +158,7 @@ def get_action(state, score):
     # best_act, _ = td_mcts.best_action_distribution(root)
     # return best_act
 
+    env.board = state
     legal_moves = [a for a in range(4) if env.is_move_legal(a)]
     afterstates = []
     afterstate_values = []
