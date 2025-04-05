@@ -152,11 +152,26 @@ env = Game2048Env()
 td_mcts = TD_MCTS(env, approximator, iterations=50, exploration_constant=1.41, rollout_depth=10, gamma=0.99)
 
 def get_action(state, score):
-    root = TD_MCTS_Node(state, env.score)
-    for _ in range(td_mcts.iterations):
-        td_mcts.run_simulation(root)
-    best_act, _ = td_mcts.best_action_distribution(root)
-    return best_act
+    # root = TD_MCTS_Node(state, env.score)
+    # for _ in range(td_mcts.iterations):
+    #     td_mcts.run_simulation(root)
+    # best_act, _ = td_mcts.best_action_distribution(root)
+    # return best_act
+
+    legal_moves = [a for a in range(4) if env.is_move_legal(a)]
+    afterstates = []
+    afterstate_values = []
+
+    for a in legal_moves:
+        env_copy = copy.deepcopy(env)
+        next_state, next_score, next_done, _ = env_copy.step(a)
+        afterstate = next_state.copy()
+        afterstates.append((afterstate, a))
+        afterstate_values.append(approximator.value(afterstate))
+    idx = np.argmax(afterstate_values)
+    selected_afterstate, action = afterstates[idx]
+    selected_value = afterstate_values[idx]
+    return action
 
     # return random.choice([0, 1, 2, 3]) # Choose a random action
     

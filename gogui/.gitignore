@@ -1,0 +1,8 @@
+doc/doxygen/html
+build
+lib
+TAGS
+.settings
+.*.swp
+gogui*.exe
+out
