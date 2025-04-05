@@ -162,16 +162,19 @@ def get_action(state, score):
     legal_moves = [a for a in range(4) if env.is_move_legal(a)]
     afterstates = []
     afterstate_values = []
-
+    afterstate_values_mean = []
     for a in legal_moves:
-        env_copy = copy.deepcopy(env)
-        next_state, next_score, next_done, _ = env_copy.step(a)
-        afterstate = next_state.copy()
-        afterstates.append((afterstate, a))
-        afterstate_values.append(approximator.value(afterstate))
-    idx = np.argmax(afterstate_values)
-    selected_afterstate, action = afterstates[idx]
-    selected_value = afterstate_values[idx]
+        afterstates = []
+        afterstate_values = []
+        for _ in range(10):
+            env_copy = copy.deepcopy(env)
+            next_state, next_score, next_done, _ = env_copy.step(a)
+            afterstate = next_state.copy()
+            afterstates.append((afterstate, a))
+            afterstate_values.append(approximator.value(afterstate))
+        afterstate_values_mean.append(np.mean(afterstate_values))
+    idx = np.argmax(afterstate_values_mean)
+    action = legal_moves[idx]
     return action
 
     # return random.choice([0, 1, 2, 3]) # Choose a random action
