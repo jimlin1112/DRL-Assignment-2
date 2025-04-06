@@ -166,12 +166,10 @@ def get_action(state, score):
     for a in legal_moves:
         afterstates = []
         afterstate_values = []
-        for _ in range(20):
+        for _ in range(30):
             env_copy = copy.deepcopy(env)
             next_state, next_score, next_done, _ = env_copy.step(a)
-            afterstate = next_state.copy()
-            afterstates.append((afterstate, a))
-            afterstate_values.append(approximator.value(afterstate))
+            afterstate_values.append(approximator.value(next_state))
         afterstate_values_mean.append(np.mean(afterstate_values))
     idx = np.argmax(afterstate_values_mean)
     action = legal_moves[idx]
