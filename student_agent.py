@@ -152,11 +152,11 @@ env = Game2048Env()
 td_mcts = TD_MCTS(env, approximator, iterations=50, exploration_constant=1.41, rollout_depth=10, gamma=0.99)
 
 def get_action(state, score):
-    # root = TD_MCTS_Node(state, env.score)
-    # for _ in range(td_mcts.iterations):
-    #     td_mcts.run_simulation(root)
-    # best_act, _ = td_mcts.best_action_distribution(root)
-    # return best_act
+    root = TD_MCTS_Node(state, score)
+    for _ in range(td_mcts.iterations):
+        td_mcts.run_simulation(root)
+    best_act, _ = td_mcts.best_action_distribution(root)
+    return best_act
 
     env.board = state
     legal_moves = [a for a in range(4) if env.is_move_legal(a)]
