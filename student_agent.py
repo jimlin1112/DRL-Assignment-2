@@ -166,7 +166,7 @@ def get_action(state, score):
     for a in legal_moves:
         afterstates = []
         afterstate_values = []
-        for _ in range(10):
+        for _ in range(20):
             env_copy = copy.deepcopy(env)
             next_state, next_score, next_done, _ = env_copy.step(a)
             afterstate = next_state.copy()
