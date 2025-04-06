@@ -84,15 +84,13 @@ class TD_MCTS:
                 break
 
             action = random.choice(legal_moves)
+            # afterstate = move_board(sim_env.board, action, 0)[0]
             _, reward, done, _ = sim_env.step(action)
-            total_reward += discount * reward
+            total_reward += discount * (self.approximator.value(sim_env.board))
             discount *= self.gamma
             current_depth += 1
-
-        # Use TD approximator to evaluate final state
-        final_value = self.approximator.value(sim_env.board)
-        discounted_final = (self.gamma ** current_depth) * final_value
-        return total_reward + discounted_final
+        # return total_reward
+        return total_reward + discount * self.approximator.value(sim_env.board)
 
 
     def backpropagate(self, node, reward):
@@ -149,31 +147,31 @@ with open("ntuple_approximator.pkl", "rb") as f:
     approximator = pickle.load(f)
 
 env = Game2048Env()
-td_mcts = TD_MCTS(env, approximator, iterations=50, exploration_constant=1.41, rollout_depth=10, gamma=0.99)
+td_mcts = TD_MCTS(env, approximator, iterations=50, exploration_constant=1.41, rollout_depth=5, gamma=0.99)
 
 def get_action(state, score):
-    # root = TD_MCTS_Node(state, score)
-    # for _ in range(td_mcts.iterations):
-    #     td_mcts.run_simulation(root)
-    # best_act, _ = td_mcts.best_action_distribution(root)
-    # return best_act
+    root = TD_MCTS_Node(state, score)
+    for _ in range(td_mcts.iterations):
+        td_mcts.run_simulation(root)
+    best_act, _ = td_mcts.best_action_distribution(root)
+    return best_act
 
-    env.board = state
-    legal_moves = [a for a in range(4) if env.is_move_legal(a)]
-    afterstates = []
-    afterstate_values = []
-    afterstate_values_mean = []
-    for a in legal_moves:
-        afterstates = []
-        afterstate_values = []
-        for _ in range(10):
-            env_copy = copy.deepcopy(env)
-            next_state, next_score, next_done, _ = env_copy.step(a)
-            afterstate_values.append(approximator.value(next_state))
-        afterstate_values_mean.append(np.mean(afterstate_values))
-    idx = np.argmax(afterstate_values_mean)
-    action = legal_moves[idx]
-    return action
+    # env.board = state
+    # legal_moves = [a for a in range(4) if env.is_move_legal(a)]
+    # afterstates = []
+    # afterstate_values = []
+    # afterstate_values_mean = []
+    # for a in legal_moves:
+    #     afterstates = []
+    #     afterstate_values = []
+    #     for _ in range(10):
+    #         env_copy = copy.deepcopy(env)
+    #         next_state, next_score, next_done, _ = env_copy.step(a)
+    #         afterstate_values.append(approximator.value(next_state))
+    #     afterstate_values_mean.append(np.mean(afterstate_values))
+    # idx = np.argmax(afterstate_values_mean)
+    # action = legal_moves[idx]
+    # return action
 
     # return random.choice([0, 1, 2, 3]) # Choose a random action
     
